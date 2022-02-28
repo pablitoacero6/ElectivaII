@@ -1,7 +1,7 @@
 const oracledb = require('oracledb');
 
 DB = {
-    user: 'CONEXION',
+    user: 'ADMIN',
     password: '123',
     connectString: 'localhost:1521'
 }
