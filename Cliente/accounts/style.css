@@ -63,23 +63,27 @@ body {
     border-left: 1px solid black;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 
-.center section {
-    width: 80%;
-    height: 70%;
-    margin: 0 auto;
-    overflow-y: scroll;
-    overflow-x: hidden;
+#cards {
+    width: 90%;
+    height: 180px;
+    margin: auto;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 2px, rgba(0, 0, 0, 0.05) 0px 4px 12px;
 }
 
-.center table {
-    width: 80%;
-    margin: 0 auto;
+#cards header {
+    background-color: black;
 }
 
-.center table tr td {
-    height: 30px;
-    border-bottom: 1px solid;
+#cards p {
+    color: white;
 }
+
+#cards img {
+    width: 100px;
+    height: 100px;
+}
+
