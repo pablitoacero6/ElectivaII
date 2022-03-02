@@ -1,6 +1,7 @@
-var createAccount = document.getElementById("createAccount"),
-    editAccount = document.getElementById("editAccount"),
-    accounts = document.getElementById("accounts"),
+/* ANIMATION */
+var createClient = document.getElementById("createClient"),
+    editClient = document.getElementById("editClient"),
+    clients = document.getElementById("clients"),
     overlay1 = document.getElementById("overlay1"),
     overlay2 = document.getElementById("overlay2"),
     overlay3 = document.getElementById("overlay3"),
@@ -11,17 +12,18 @@ var createAccount = document.getElementById("createAccount"),
     cerrarPopup2 = document.getElementById("cerrarPopup2"),
     cerrarPopup3 = document.getElementById("cerrarPopup3");
 
-createAccount.addEventListener('click', function() {
+
+createClient.addEventListener('click', function() {
     overlay1.classList.add('active');
     popup1.classList.add('active');
 });
 
-editAccount.addEventListener('click', function(){
+editClient.addEventListener('click', function(){
     overlay2.classList.add('active');
     popup2.classList.add('active');
 });
 
-accounts.addEventListener('click', function() {
+clients.addEventListener('click', function () {
     overlay3.classList.add('active');
     popup3.classList.add('active');
 });
@@ -40,3 +42,21 @@ cerrarPopup3.addEventListener('click', function() {
     overlay3.classList.remove('active');
     popup3.classList.remove('active');
 });
+
+/* CONEXION */
+
+var url = "http://localhost:3000";
+
+function verifyConnection(){
+    fetch(url + "/register").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        console.log(json);
+    })
+}
+
+document.getElementById("saveCreateClient").addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    verifyConnection();
+})

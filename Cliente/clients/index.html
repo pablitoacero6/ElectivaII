@@ -34,31 +34,104 @@
     </div>
     <div class="center">
         <section id="cards">
-            <header>
-                <p>Crear cliente</p>
-            </header>
-            <section id="centerCard">
-                <img src="../img/user.png" alt="">
-            </section>
+            <a href="#" id="createClient">
+                <header>
+                    <p>Crear cliente</p>
+                </header>
+                <section id="centerCard">
+                    <img src="../img/user.png" alt="">
+                </section>
+            </a>  
         </section>
         <section id="cards">
-            <header>
-                <p>Editar cliente</p>
-            </header>
-            <section id="centerCard">
-                <img src="../img/editUser.png" alt="">
-            </section>
+            <a href="#" id="editClient">
+                <header>
+                    <p>Editar cliente</p>
+                </header>
+                <section id="centerCard">
+                    <img src="../img/editUser.png" alt="">
+                </section>
+            </a>                
         </section>
         <section id="cards">
-            <header>
-                <p>Ver clientes</p>
-            </header>
-            <section id="centerCard">
-                <img src="../img/users.png" alt="">
-            </section>
+            <a href="#" id="clients">
+                <header>
+                    <p>Ver clientes</p>
+                </header>
+                <section id="centerCard">
+                    <img src="../img/users.png" alt="">
+                </section>
+            </a>                
         </section>
     </div>
-    
-
+    <div class="overlay" id="overlay1">
+        <div class="popup" id="popup1">
+            <a href="#" class="cerrarPopup" id="cerrarPopup1"><img src="../img/close.png" alt=""></a>
+            <h2>Crear cliente</h2>
+            <div class="boxCreate">
+                <input type="text" placeholder="Nombres...">
+                <input type="text" placeholder="Apellidos...">
+                <p>Fecha de nacimiento:</p>
+                <input type="text" placeholder="dd/mm/yyyy">
+                <input type="text" placeholder="No. de documento CC...">
+                <input type="text" placeholder="Direccion...">
+                <input type="button" class="btn" id="saveCreateClient" value="Guardar">
+            </div>
+        </div>
+    </div> 
+    <div class="overlay" id="overlay2">
+        <div class="popup" id="popup2">
+            <a href="#" class="cerrarPopup" id="cerrarPopup2"><img src="../img/close.png" alt=""></a>
+            <h2>Editar cliente</h2>
+            <div class="boxCreateTwo">
+                <p>Seleccionar: </p>
+                <Select id="ClientList">
+                </Select>
+                <p>Nombres: </p>
+                <input type="text" placeholder="Nombres...">
+                <p>Apellidos: </p>
+                <input type="text" placeholder="Apellidos...">
+                <p>Fecha de nacimiento:</p>
+                <input type="text" placeholder="dd/mm/yyyy">
+                <p>No. de documento: </p>
+                <input type="text" placeholder="No. de documento CC...">
+                <p>Direccion: </p>
+                <input type="text" placeholder="Direccion...">
+            </div>
+            <input type="button" class="btn" value="Guardar">
+        </div>
+    </div>  
+    <div class="overlay" id="overlay3">
+        <div class="popup" id="popup3">
+            <a href="#" class="cerrarPopup" id="cerrarPopup3"><img src="../img/close.png" alt=""></a>
+            <h2>Ver clientes</h2>             
+            <div class="boxCreateThree">
+                <p>Seleccionar: </p>   
+                <Select id="ClientList">
+                </Select>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>No. de documento</th>
+                        <th>Direccion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>..</td>
+                        <td>..</td>
+                        <td>..</td>
+                        <td>..</td>
+                        <td>..</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>     
+<script src="./scripts/script.js"></script>
 </body>
 </html>
