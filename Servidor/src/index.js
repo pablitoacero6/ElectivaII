@@ -3,6 +3,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const app = express();
 
+app.use(cors());
+
 
 const router = require('../routes/routes.js');
 
@@ -14,7 +16,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(router);
-app.use(cors());
 
 app.listen(app.get('port'),()=> {
     console.log("server status 200 on port 3000");

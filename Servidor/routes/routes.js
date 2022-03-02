@@ -14,7 +14,7 @@ router.get('/fromOracle', async (req, res)=> {
     sql ="select * from userbank";
     
     let result = await DB.Open(sql,[],false);
-    //console.log(result.rows);
+    console.log(result.rows);
     console.log(usuarios);
     result.rows.map(user => {
         let userSchema ={
@@ -35,7 +35,10 @@ router.get('/register', async (req,res)=> {
     result.rows.map(user => {
         let userSchema ={
             "NAMES": user[0],
-            "LASTNAMES":user[1]
+            "LASTNAMES":user[1],
+            "DATEBIRTH":user[2],
+            "DOCUMENT":user[3],
+            "ADDRESS":user[4]
         }
         usuarios.push(userSchema)
     });
