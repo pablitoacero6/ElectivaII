@@ -1,3 +1,5 @@
+
+
 /* ANIMATION */
 var createClient = document.getElementById("createClient"),
     editClient = document.getElementById("editClient"),
@@ -51,7 +53,7 @@ function verifyConnection(){
     fetch(url + "/register").then(function(res) {
         return res.json();
     }).then(function (json) {
-        console.log(json);
+        console.log(json[0].NAMES);
     })
 }
 

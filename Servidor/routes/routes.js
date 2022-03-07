@@ -1,4 +1,4 @@
-const { BADFAMILY } = require('dns');
+
 const {Router} = require('express');
 const router = Router();
 const DB = require('../config/config');
@@ -9,22 +9,10 @@ router.get('/',(req,res)=> {
     })
 });
 
-router.get('/fromOracle', async (req, res)=> {
-    const usuarios =[];
-    sql ="select * from userbank";
-    
-    let result = await DB.Open(sql,[],false);
-    console.log(result.rows);
-    console.log(usuarios);
-    result.rows.map(user => {
-        let userSchema ={
-            "NAME": user[0],
-            "PASSWORD":user[1]
-        }
-        usuarios.push(userSchema)
-    });
-    res.json({usuarios});
+router.post('/createClient', async(req,res) => {
+
 });
+
 
 router.get('/register', async (req,res)=> {
     const usuarios =[];
@@ -42,7 +30,7 @@ router.get('/register', async (req,res)=> {
         }
         usuarios.push(userSchema)
     });
-    res.json({usuarios});
+    res.json(usuarios);
 });
 
 
