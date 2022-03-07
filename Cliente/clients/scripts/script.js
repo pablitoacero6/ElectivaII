@@ -1,4 +1,7 @@
+
+
 /* ANIMATION */
+
 var createClient = document.getElementById("createClient"),
     editClient = document.getElementById("editClient"),
     clients = document.getElementById("clients"),
@@ -45,13 +48,14 @@ cerrarPopup3.addEventListener('click', function() {
 
 /* CONEXION */
 
+
 var url = "http://localhost:3000";
 
 function verifyConnection(){
     fetch(url + "/register").then(function(res) {
         return res.json();
     }).then(function (json) {
-        console.log(json);
+        console.log(json[0].NAMES);
     })
 }
 
@@ -60,3 +64,4 @@ document.getElementById("saveCreateClient").addEventListener("click",
     evt.preventDefault();
     verifyConnection();
 })
+
