@@ -1,6 +1,7 @@
 
 
 /* ANIMATION */
+
 var createClient = document.getElementById("createClient"),
     editClient = document.getElementById("editClient"),
     clients = document.getElementById("clients"),
@@ -47,6 +48,7 @@ cerrarPopup3.addEventListener('click', function() {
 
 /* CONEXION */
 
+
 var url = "http://localhost:3000";
 
 function verifyConnection(){
@@ -62,3 +64,4 @@ document.getElementById("saveCreateClient").addEventListener("click",
     evt.preventDefault();
     verifyConnection();
 })
+
