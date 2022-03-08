@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "node": "^17.5.0",
+    "require": "^2.4.20"
+  }
+}

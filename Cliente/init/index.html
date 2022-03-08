@@ -15,7 +15,7 @@
         <div class="nav">            
             <nav>
                 <ul>
-                    <a href="../init/index.html"><li>Inicio</li></a>
+                    <a href="../init/index.html" id="init"><li>Inicio</li></a>
                 </ul>
                 <ul>
                     <a href="../clients/index.html"><li>Clientes</li></a>
@@ -36,113 +36,20 @@
         <h1>Ultimos movimientos</h1>
             <section>  
                 <table>
-                    <body>
+                    <thead>
                         <tr>
                             <td>Cod. movimiento</td>
                             <td>Tipo de movimiento</td>
-                            <td>Estado</td>
+                            <td>Estado movimiento</td>
                         </tr>
-                        <tr>
-                            <td>123456</td>
-                            <td>Registro</td>
-                            <td>R</td>
-                        </tr>
-                        <tr>
-                            <td>987654</td>
-                            <td>Transaccion</td>
-                            <td>E</td>
-                        </tr>
-                        <tr>
-                            <td>741258</td>
-                            <td>Transaccion</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>123456</td>
-                            <td>Registro</td>
-                            <td>R</td>
-                        </tr>
-                        <tr>
-                            <td>987654</td>
-                            <td>Transaccion</td>
-                            <td>E</td>
-                        </tr>
-                        <tr>
-                            <td>741258</td>
-                            <td>Transaccion</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>123456</td>
-                            <td>Registro</td>
-                            <td>R</td>
-                        </tr>
-                        <tr>
-                            <td>987654</td>
-                            <td>Transaccion</td>
-                            <td>E</td>
-                        </tr>
-                        <tr>
-                            <td>741258</td>
-                            <td>Transaccion</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>123456</td>
-                            <td>Registro</td>
-                            <td>R</td>
-                        </tr>
-                        <tr>
-                            <td>987654</td>
-                            <td>Transaccion</td>
-                            <td>E</td>
-                        </tr>
-                        <tr>
-                            <td>741258</td>
-                            <td>Transaccion</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>123456</td>
-                            <td>Registro</td>
-                            <td>R</td>
-                        </tr>
-                        <tr>
-                            <td>987654</td>
-                            <td>Transaccion</td>
-                            <td>E</td>
-                        </tr>
-                        <tr>
-                            <td>741258</td>
-                            <td>Transaccion</td>
-                            <td>A</td>
-                        </tr>
-                        <tr>
-                            <td>123456</td>
-                            <td>Registro</td>
-                            <td>R</td>
-                        </tr>
-                        <tr>
-                            <td>987654</td>
-                            <td>Transaccion</td>
-                            <td>E</td>
-                        </tr>
-                        <tr>
-                            <td>741258</td>
-                            <td>Transaccion</td>
-                            <td>A</td>
-                        </tr>
-                    </body>
+                    </thead>
+                    <tbody id="registerMovements"> 
+                        
+                    </tbody>
                 </table>
             </section>
         </div>
     
-<script>
-    fetch("http://localhost:3000/"
-    ).then(res => res.json())
-    .then(data => {
-        console.log(data);
-    })
-</script>
+<script src="../client.js"></script>
 </body>
 </html>
