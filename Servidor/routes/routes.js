@@ -1,11 +1,18 @@
 const {Router, response} = require('express');
 const router = Router();
 const DB = require('../config/config');
+const initJson = require('../movements.json')
 
 router.get('/',(req,res)=> {
     res.status(200).json({
         message: "ruta status 200"
     })
+});
+
+router.get('/init',(req,res)=> {
+    const moves = initJson
+    console.log(moves)
+    res.json(moves)
 });
 
 router.post('/crearCliente', async(req,res) => {
@@ -44,7 +51,7 @@ router.get('/beneficiario', async (req,res)=> {
     console.log(result);    
 });
 
-router.get('/cliente', async (req,res)=> {
+router.get('/verCliente', async (req,res)=> {
     const usuarios =[];
     sql ="select * from cliente_tab";
 

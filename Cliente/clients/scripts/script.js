@@ -1,5 +1,3 @@
-
-
 /* ANIMATION */
 
 var createClient = document.getElementById("createClient"),
@@ -14,6 +12,7 @@ var createClient = document.getElementById("createClient"),
     cerrarPopup1 = document.getElementById("cerrarPopup1"),
     cerrarPopup2 = document.getElementById("cerrarPopup2"),
     cerrarPopup3 = document.getElementById("cerrarPopup3");
+    
 
 
 createClient.addEventListener('click', function() {
@@ -44,6 +43,7 @@ cerrarPopup2.addEventListener('click', function() {
 cerrarPopup3.addEventListener('click', function() {
     overlay3.classList.remove('active');
     popup3.classList.remove('active');
+    location.reload()
 });
 
 /* CONEXION */
@@ -59,11 +59,14 @@ function verifyConnection(){
     })
 }
 
+/* CREAR CLIENTE */
+    
+
 function crearCliente(){
     fetch(url + "/crearCliente", {
         method: 'POST',
         body: JSON.stringify({
-            ID_CLIENTE: '004',
+            ID_CLIENTE: "005" ,
             NOMBRES: document.getElementById('nombres').value,
             APELLIDOS: document.getElementById('apellidos').value,
             FECHA_NACIMIENTO: document.getElementById('fecha').value,
@@ -90,3 +93,54 @@ document.getElementById("saveCreateClient").addEventListener("click",
     crearCliente();
 })
 
+/* MOSTRAR CLIENTE */
+
+function mostrarClientes(){
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        const body = document.getElementById('bodyTableClient');
+        
+        var count = Object.keys(json).length
+        for (var i = 0; i < count ; i++) {
+
+            var hilera = document.createElement("tr");
+
+            var celda1 = document.createElement("td");
+            var textoCelda1 = document.createTextNode(json[i].ID_CLIENTE);
+            celda1.appendChild(textoCelda1);
+            var celda2 = document.createElement("td");
+            var textoCelda2 = document.createTextNode(json[i].NOMBRES);
+            celda2.appendChild(textoCelda2);
+            var celda3 = document.createElement("td");
+            var textoCelda3 = document.createTextNode(json[i].APELLIDOS);
+            celda3.appendChild(textoCelda3);
+            var celda4 = document.createElement("td");
+            var textoCelda4 = document.createTextNode(json[i].FECHA_NACIMIENTO);
+            celda4.appendChild(textoCelda4);
+            var celda5 = document.createElement("td");
+            var textoCelda5 = document.createTextNode(json[i].NUMERO_DOCUMENTO);
+            celda5.appendChild(textoCelda5);
+            var celda6 = document.createElement("td");
+            var textoCelda6 = document.createTextNode(json[i].DIRECCION);
+            celda6.appendChild(textoCelda6);
+            hilera.appendChild(celda1);
+            hilera.appendChild(celda2);
+            hilera.appendChild(celda3);
+            hilera.appendChild(celda4);
+            hilera.appendChild(celda5);
+            hilera.appendChild(celda6);
+            
+        
+            // agrega la hilera al final de la tabla (al final del elemento tblbody)
+            body.appendChild(hilera);
+          }
+    })
+}
+
+
+document.getElementById('clients').addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    mostrarClientes();
+})
