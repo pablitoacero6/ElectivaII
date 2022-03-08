@@ -52,16 +52,41 @@ cerrarPopup3.addEventListener('click', function() {
 var url = "http://localhost:3000";
 
 function verifyConnection(){
-    fetch(url + "/register").then(function(res) {
+    fetch(url + "/cliente").then(function(res) {
         return res.json();
     }).then(function (json) {
-        console.log(json[0].NAMES);
+        console.log(json[0].ID_CLIENTE);
+    })
+}
+
+function crearCliente(){
+    fetch(url + "/crearCliente", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIENTE: '004',
+            NOMBRES: document.getElementById('nombres').value,
+            APELLIDOS: document.getElementById('apellidos').value,
+            FECHA_NACIMIENTO: document.getElementById('fecha').value,
+            TIPO_DOCUMENTO: 'CC',
+            NUMERO_DOCUMENTO: document.getElementById('No documento').value,
+            DIRECCION: document.getElementById('direccion').value,
+            ESTADO_CLIENTE: 'A',
+            LISTA_CUENTAS: null,
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+    .catch(error => console.error('Error: ', error))
+    .then(response => {
+        return console.log('Success: ', response);
     })
 }
 
 document.getElementById("saveCreateClient").addEventListener("click", 
 (evt) => {
     evt.preventDefault();
-    verifyConnection();
+    crearCliente();
 })
 
