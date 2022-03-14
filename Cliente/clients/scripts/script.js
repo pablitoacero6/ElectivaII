@@ -96,7 +96,7 @@ document.getElementById("saveCreateClient").addEventListener("click",
 /* EDITAR CLIENTE */
 
 /* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
-function editarClientes(){
+function mostrarEditarClientes(){
     fetch(url + "/verCliente").then(function(res) {
         return res.json();
     }).then(function (json) {
@@ -114,10 +114,57 @@ function editarClientes(){
 document.getElementById('editClient').addEventListener("click", 
 (evt) => {
     evt.preventDefault();
-    editarClientes();
+    mostrarEditarClientes();
+})
+
+
+var editCodClient = 000;
+
+function opcionSeleccionadEditar() {
+    const indice = document.getElementById('ClientList').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    const opcionSeleccionada = document.getElementById('ClientList').options[indice].text;
+    editCodClient = opcionSeleccionada.substr(0,3)
+  };
+
+document.getElementById('ClientList').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionadEditar();
 })
 
 /* MANDAR DATOS PARA EDITAR */
+
+function editarCliente(){
+    fetch(url + "/editarCliente", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIENTE: editCodClient,
+            NOMBRES: document.getElementById('editName').value,
+            APELLIDOS: document.getElementById('editLastName').value,
+            FECHA_NACIMIENTO: document.getElementById('editBirth').value,
+            TIPO_DOCUMENTO: 'CC',
+            NUMERO_DOCUMENTO: document.getElementById('editNoDoc').value,
+            DIRECCION: document.getElementById('editAddress').value,
+            ESTADO_CLIENTE: 'A',
+            LISTA_CUENTAS: null,
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+    .catch(error => console.error('Error: ', error))
+    .then(response => {
+        return console.log('Success: ', response);
+    })
+}
+
+document.getElementById("btnEditarCliente").addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    editarCliente();
+})
 
 /* MOSTRAR CLIENTE */
 

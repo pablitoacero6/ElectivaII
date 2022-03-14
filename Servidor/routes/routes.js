@@ -38,6 +38,21 @@ router.post('/crearCliente', async(req,res) => {
 
 //UPDATE cliente_tab SET NOMBRES='Juan', apellidos='Marquez',fecha_nacimiento=null,numero_documento='',direccion='' WHERE id_cliente='003';
 
+router.post('/editarCliente', async(req,res) => {
+    const client = req.body
+    console.log(client)
+    sql = "update cliente_tab set NOMBRES='"+
+    client.NOMBRES+"', apellidos='"+client.APELLIDOS+
+    "', fecha_nacimiento=TO_DATE('"+client.FECHA_NACIMIENTO+
+    "','dd/mm/yy'),numero_documento='"+client.NUMERO_DOCUMENTO+
+    "',direccion='"+client.DIRECCION+"' where id_cliente='"+client.ID_CLIENTE+"'" 
+
+    console.log(sql)
+    let result = await DB.Open(sql,[],true);
+    console.log(result); 
+
+    res.end('202')
+});
 
 router.get('/banco', async (req,res)=> {
     sql ="select * from banco_tab";
