@@ -36,6 +36,8 @@ router.post('/crearCliente', async(req,res) => {
     res.end('202')
 });
 
+//UPDATE cliente_tab SET NOMBRES='Juan', apellidos='Marquez',fecha_nacimiento=null,numero_documento='',direccion='' WHERE id_cliente='003';
+
 
 router.get('/banco', async (req,res)=> {
     sql ="select * from banco_tab";
