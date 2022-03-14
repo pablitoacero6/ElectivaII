@@ -36,7 +36,28 @@ router.post('/crearCliente', async(req,res) => {
     res.end('202')
 });
 
-//UPDATE cliente_tab SET NOMBRES='Juan', apellidos='Marquez',fecha_nacimiento=null,numero_documento='',direccion='' WHERE id_cliente='003';
+//insert into cuenta_tab values ('001-000001', 'COP', 15000000, 3750000, sysdate, 'NOR', null)
+
+router.post('/crearCuenta', async(req,res) => {
+    const account = req.body
+    console.log(account)
+    sql = "insert into cuenta_tab values(" 
+    + "'" + account.ID_CLIENTE + "'" + ","
+    + "'" + account.NOMBRES + "'" + ","
+    + "'" + account.APELLIDOS + "'" + ","
+    + "TO_DATE( "+ "'" + account.FECHA_NACIMIENTO + "' , 'dd/mm/yy')" + ","
+    + "'" + account.TIPO_DOCUMENTO + "'" + ","
+    + "'" + account.NUMERO_DOCUMENTO + "'" + ","
+    + "'" + account.DIRECCION + "'" + ","
+    + "'" + account.ESTADO_CLIENTE + "'" + ","
+    + account.LISTA_CUENTAS
+    + ")"
+
+    let result = await DB.Open(sql,[],true);
+    console.log(result); 
+
+    res.end('202')
+});
 
 router.post('/editarCliente', async(req,res) => {
     const client = req.body

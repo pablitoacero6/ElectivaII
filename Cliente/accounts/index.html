@@ -99,16 +99,21 @@
             <a href="" class="cerrarPopup" id="cerrarPopup1"><img src="../img/close.png" alt=""></a>
             <h2>Crear cuenta</h2>
             <div class="boxCreate">
-                <input type="text" placeholder="001-00XXXX">
-                <p>Seleccionar: </p>
+                <input type="text" placeholder="001-00XXXX" id="accountCod">
+                <p>Seleccionar titular: </p>
                 <Select id="ClientList">
                 </Select>
-                <input type="text" placeholder="Nombres...">
-                <input type="text" placeholder="Apellidos...">
-                <p>Fecha de nacimiento:</p>
-                <input type="text" placeholder="dd/mm/yyyy">
-                <input type="text" placeholder="No. de documento CC...">
-                <input type="text" placeholder="Direccion...">
+                <p>Divisa: </p>
+                <Select id="divisaList">
+                    <option>COP</option>
+                    <option>USD</option>
+                </Select>
+                <input type="text" placeholder="Saldo...">
+                <p>Tipo de cuenta: </p>
+                <Select id="typeAccount">
+                    <option>NOR</option>
+                    <option>PRF</option>
+                </Select>
                 <input type="button" class="btn" value="Guardar">
             </div>
         </div>

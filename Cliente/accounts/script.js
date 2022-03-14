@@ -82,3 +82,59 @@ cerrarPopup6.addEventListener('click', function() {
     overlay6.classList.remove('active');
     popup6.classList.remove('active');
 });
+
+var url = "http://localhost:3000";
+
+/* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
+
+function mostrarEditarClientes(){
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        const body = document.getElementById('ClientList');
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].ID_CLIENTE +" - "+ json[index].NOMBRES);
+            option.appendChild(textoOption);
+            body.appendChild(option);
+        }
+    })
+}
+
+document.getElementById('createAccount').addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    mostrarEditarClientes();
+})
+
+/* CREAR CUENTA */
+
+//sacar divisas
+function crearCliente(){
+    fetch(url + "/crearCuenta", {
+        method: 'POST',
+        body: JSON.stringify({
+            NO_ACCOUNT: document.getElementById('accountCod').value ,
+            CURRENCY: document.getElementById('divisaList').value,
+            BALANCE: document.getElementById('apellidos').value,
+            OVERSHOOT_VALUE: document.getElementById('fecha').value,
+            ACCOUNT_TYPE: document.getElementById('No documento').value,
+            BENEFICIARY_LIST: null
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+    .catch(error => console.error('Error: ', error))
+    .then(response => {
+        return console.log('Success: ', response);
+    })
+}
+
+document.getElementById("saveCreateClient").addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    crearCliente();
+})

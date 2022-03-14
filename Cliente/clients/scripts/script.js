@@ -38,6 +38,7 @@ cerrarPopup1.addEventListener('click', function() {
 cerrarPopup2.addEventListener('click', function() {
     overlay2.classList.remove('active');
     popup2.classList.remove('active');
+    location.reload()
 });
 
 cerrarPopup3.addEventListener('click', function() {
@@ -96,6 +97,7 @@ document.getElementById("saveCreateClient").addEventListener("click",
 /* EDITAR CLIENTE */
 
 /* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
+
 function mostrarEditarClientes(){
     fetch(url + "/verCliente").then(function(res) {
         return res.json();
