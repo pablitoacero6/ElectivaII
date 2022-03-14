@@ -66,7 +66,7 @@ function crearCliente(){
     fetch(url + "/crearCliente", {
         method: 'POST',
         body: JSON.stringify({
-            ID_CLIENTE: "005" ,
+            ID_CLIENTE: document.getElementById('codCliente').value ,
             NOMBRES: document.getElementById('nombres').value,
             APELLIDOS: document.getElementById('apellidos').value,
             FECHA_NACIMIENTO: document.getElementById('fecha').value,
@@ -92,6 +92,32 @@ document.getElementById("saveCreateClient").addEventListener("click",
     evt.preventDefault();
     crearCliente();
 })
+
+/* EDITAR CLIENTE */
+
+/* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
+function editarClientes(){
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        const body = document.getElementById('ClientList');
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].ID_CLIENTE +" - "+ json[index].NOMBRES);
+            option.appendChild(textoOption);
+            body.appendChild(option);
+        }
+    })
+}
+
+document.getElementById('editClient').addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    editarClientes();
+})
+
+/* MANDAR DATOS PARA EDITAR */
 
 /* MOSTRAR CLIENTE */
 
