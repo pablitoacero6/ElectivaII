@@ -42,15 +42,10 @@ router.post('/crearCuenta', async(req,res) => {
     const account = req.body
     console.log(account)
     sql = "insert into cuenta_tab values(" 
-    + "'" + account.ID_CLIENTE + "'" + ","
-    + "'" + account.NOMBRES + "'" + ","
-    + "'" + account.APELLIDOS + "'" + ","
-    + "TO_DATE( "+ "'" + account.FECHA_NACIMIENTO + "' , 'dd/mm/yy')" + ","
-    + "'" + account.TIPO_DOCUMENTO + "'" + ","
-    + "'" + account.NUMERO_DOCUMENTO + "'" + ","
-    + "'" + account.DIRECCION + "'" + ","
-    + "'" + account.ESTADO_CLIENTE + "'" + ","
-    + account.LISTA_CUENTAS
+    + "'" + account.NO_ACCOUNT + "'" + ","
+    + "'" + account.CURRENCY + "'" + ","
+    + account.BALANCE + "," + account.OVERSHOOT_VALUE + ", sysdate, "
+    + "'" + account.ACCOUNT_TYPE + "' , null"
     + ")"
 
     let result = await DB.Open(sql,[],true);
@@ -110,6 +105,27 @@ router.get('/verCliente', async (req,res)=> {
         usuarios.push(userSchema)
     });
    res.json(usuarios);
+});
+
+router.get('/verCuentas', async (req,res)=> {
+    const cuentas =[];
+    sql ="select * from cuenta_tab";
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+    result.rows.map(account => {
+        let userSchema ={
+            "NO_CUENTA": account[0],
+            "DIVISA":account[1],
+            "SALDO": account[2],
+            "SOBREGIRO_SALDO":account[3],
+            "FECHA_CREACION": account[4],
+            "TIPO_CUENTA":account[5],
+            "LISTA_BEENEFICIAROS": account[6]
+        }
+        cuentas.push(userSchema)
+    });
+   res.json(cuentas);
 });
 
 

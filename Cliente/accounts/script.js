@@ -66,6 +66,7 @@ cerrarPopup2.addEventListener('click', function() {
 cerrarPopup3.addEventListener('click', function() {
     overlay3.classList.remove('active');
     popup3.classList.remove('active');
+    location.reload()
 });
 
 cerrarPopup4.addEventListener('click', function() {
@@ -110,16 +111,45 @@ document.getElementById('createAccount').addEventListener("click",
 
 /* CREAR CUENTA */
 
-//sacar divisas
-function crearCliente(){
+// extraer divisas
+var opcionSeleccionadaDivisa = 'COP'
+function opcionSeleccionarDivisa() {
+    const indice = document.getElementById('divisaList').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    const opcionSeleccionadaDivisa = document.getElementById('divisaList').options[indice].text;
+  };
+
+document.getElementById('divisaList').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarDivisa();
+})
+
+// extraer tipo de cuenta
+var opcionSeleccionadoTipoCuenta = 'NOR'
+
+function opcionSeleccionarTipoCuenta() {
+    const indice = document.getElementById('typeAccount').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    const opcionSeleccionadoTipoCuenta = document.getElementById('typeAccount').options[indice].text;
+  };
+
+document.getElementById('typeAccount').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarTipoCuenta();
+})
+
+
+function crearCuenta(){
     fetch(url + "/crearCuenta", {
         method: 'POST',
         body: JSON.stringify({
             NO_ACCOUNT: document.getElementById('accountCod').value ,
-            CURRENCY: document.getElementById('divisaList').value,
-            BALANCE: document.getElementById('apellidos').value,
-            OVERSHOOT_VALUE: document.getElementById('fecha').value,
-            ACCOUNT_TYPE: document.getElementById('No documento').value,
+            CURRENCY: opcionSeleccionadaDivisa,
+            BALANCE: document.getElementById('balanceAccount').value,
+            OVERSHOOT_VALUE: document.getElementById('balanceAccount').value * 0.25,
+            ACCOUNT_TYPE: opcionSeleccionadoTipoCuenta,
             BENEFICIARY_LIST: null
         }),
         headers: {
@@ -133,8 +163,62 @@ function crearCliente(){
     })
 }
 
-document.getElementById("saveCreateClient").addEventListener("click", 
+document.getElementById("saveCreateAccount").addEventListener("click", 
 (evt) => {
     evt.preventDefault();
-    crearCliente();
+    crearCuenta();
+})
+
+/* MOSTRAR CUENTAS */
+
+/* MOSTRAR CLIENTE */
+
+function mostrarCuentas(){
+    fetch(url + "/verCuentas").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        const body = document.getElementById('bodyTableAccount');
+        
+        var count = Object.keys(json).length
+        for (var i = 0; i < count ; i++) {
+
+            var hilera = document.createElement("tr");
+
+            var celda1 = document.createElement("td");
+            var textoCelda1 = document.createTextNode(json[i].NO_CUENTA);
+            celda1.appendChild(textoCelda1);
+            var celda2 = document.createElement("td");
+            var textoCelda2 = document.createTextNode(json[i].DIVISA);
+            celda2.appendChild(textoCelda2);
+            var celda3 = document.createElement("td");
+            var textoCelda3 = document.createTextNode(json[i].SALDO);
+            celda3.appendChild(textoCelda3);
+            var celda4 = document.createElement("td");
+            var textoCelda4 = document.createTextNode(json[i].SOBREGIRO_SALDO);
+            celda4.appendChild(textoCelda4);
+            var celda5 = document.createElement("td");
+            var textoCelda5 = document.createTextNode(json[i].FECHA_CREACION);
+            celda5.appendChild(textoCelda5);
+            var celda6 = document.createElement("td");
+            var textoCelda6 = document.createTextNode(json[i].TIPO_CUENTA);
+            celda6.appendChild(textoCelda6);
+            hilera.appendChild(celda1);
+            hilera.appendChild(celda2);
+            hilera.appendChild(celda3);
+            hilera.appendChild(celda4);
+            hilera.appendChild(celda5);
+            hilera.appendChild(celda6);
+            
+        
+            // agrega la hilera al final de la tabla (al final del elemento tblbody)
+            body.appendChild(hilera);
+          }
+    })
+}
+
+
+document.getElementById('accounts').addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    mostrarCuentas();
 })
