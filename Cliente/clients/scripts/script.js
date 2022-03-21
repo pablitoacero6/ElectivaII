@@ -50,7 +50,7 @@ cerrarPopup3.addEventListener('click', function() {
 /* CONEXION */
 
 
-var url = "http://localhost:3000";
+var url = "http://localhost:4000";
 
 function verifyConnection(){
     fetch(url + "/cliente").then(function(res) {
@@ -74,8 +74,7 @@ function crearCliente(){
             TIPO_DOCUMENTO: 'CC',
             NUMERO_DOCUMENTO: document.getElementById('No documento').value,
             DIRECCION: document.getElementById('direccion').value,
-            ESTADO_CLIENTE: 'A',
-            LISTA_CUENTAS: null,
+            ESTADO_CLIENTE: 'A'
         }),
         headers: {
             'Accept': 'application/json',
@@ -126,7 +125,7 @@ function opcionSeleccionadEditar() {
     const indice = document.getElementById('ClientList').selectedIndex;
     if(indice === -1) return; // Esto es cuando no hay elementos
     const opcionSeleccionada = document.getElementById('ClientList').options[indice].text;
-    editCodClient = opcionSeleccionada.substr(0,3)
+    editCodClient = opcionSeleccionada.substr(0,5)
   };
 
 document.getElementById('ClientList').addEventListener("change",
@@ -148,8 +147,7 @@ function editarCliente(){
             TIPO_DOCUMENTO: 'CC',
             NUMERO_DOCUMENTO: document.getElementById('editNoDoc').value,
             DIRECCION: document.getElementById('editAddress').value,
-            ESTADO_CLIENTE: 'A',
-            LISTA_CUENTAS: null,
+            ESTADO_CLIENTE: 'A'
         }),
         headers: {
             'Accept': 'application/json',

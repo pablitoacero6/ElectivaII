@@ -17,8 +17,9 @@ router.get('/init',(req,res)=> {
 
 router.post('/crearCliente', async(req,res) => {
     const client = req.body
-    console.log(client)
-    sql = "insert into cliente_tab values(" 
+    console.log(client)    
+
+    sql= "DECLARE new_cliente cliente; BEGIN new_cliente := cliente(" 
     + "'" + client.ID_CLIENTE + "'" + ","
     + "'" + client.NOMBRES + "'" + ","
     + "'" + client.APELLIDOS + "'" + ","
@@ -26,9 +27,8 @@ router.post('/crearCliente', async(req,res) => {
     + "'" + client.TIPO_DOCUMENTO + "'" + ","
     + "'" + client.NUMERO_DOCUMENTO + "'" + ","
     + "'" + client.DIRECCION + "'" + ","
-    + "'" + client.ESTADO_CLIENTE + "'" + ","
-    + client.LISTA_CUENTAS
-    + ")"
+    + "'" + client.ESTADO_CLIENTE+ "');"+
+    "INSERT INTO cliente_tab VALUES new_cliente; END;"
 
     let result = await DB.Open(sql,[],true);
     console.log(result); 
@@ -41,12 +41,14 @@ router.post('/crearCliente', async(req,res) => {
 router.post('/crearCuenta', async(req,res) => {
     const account = req.body
     console.log(account)
-    sql = "insert into cuenta_tab values(" 
+
+    sql= "Begin add_cuenta("
     + "'" + account.NO_ACCOUNT + "'" + ","
+    + "'" + account.ID_CLIENT + "'" + ","
     + "'" + account.CURRENCY + "'" + ","
-    + account.BALANCE + "," + account.OVERSHOOT_VALUE + ", sysdate, "
-    + "'" + account.ACCOUNT_TYPE + "' , null"
-    + ")"
+    + account.BALANCE + "," 
+    + "'" + account.ACCOUNT_TYPE 
+    + "'); End;"
 
     let result = await DB.Open(sql,[],true);
     console.log(result); 
@@ -77,6 +79,15 @@ router.get('/banco', async (req,res)=> {
     console.log(result);    
 });
 
+router.get('/prueba', async (req,res)=> {
+    sql ="begin get_cuentas('00005'); end;";
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+});
+
+
+
 router.get('/beneficiario', async (req,res)=> {
     sql ="select * from beneficiario_tab";
 
@@ -84,9 +95,20 @@ router.get('/beneficiario', async (req,res)=> {
     console.log(result);    
 });
 
+router.get('/mensaje', async (req,res)=> {
+    sql ="select * from mensaje_tab";
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+});
+
+
+
+
 router.get('/verCliente', async (req,res)=> {
     const usuarios =[];
-    sql ="select * from cliente_tab";
+    sql ="select id_cliente,nombres,apellidos,fecha_nacimiento,"+
+    "tipo_documento,numero_documento,direccion,estado_cliente from cliente_tab";
 
     let result = await DB.Open(sql,[],false);
     console.log(result);    
@@ -99,17 +121,21 @@ router.get('/verCliente', async (req,res)=> {
             "TIPO_DOCUMENTO": user[4],
             "NUMERO_DOCUMENTO":user[5],
             "DIRECCION": user[6],
-            "ESTADO_CLIENTE":user[7],
-            "LISTA_CUENTAS": user[8]
+            "ESTADO_CLIENTE":user[7]
         }
         usuarios.push(userSchema)
     });
    res.json(usuarios);
 });
 
-router.get('/verCuentas', async (req,res)=> {
+
+
+router.post('/verCuentas', async (req,res)=> {
+    const client = req.body
     const cuentas =[];
-    sql ="select * from cuenta_tab";
+    sql="SELECT Emp.NUMERO_CUENTA, Emp.DIVISA, Emp.SALDO, Emp.VALOR_SOBREGIRO, Emp.FECHA_CREACION, Emp.TIPO_CUENTA" +
+    " FROM cliente_tab E, TABLE(E.lista_cuentas) Emp" +
+    " where E.id_cliente ='" + client.ID_CLIEN + "'"
 
     let result = await DB.Open(sql,[],false);
     console.log(result);    
@@ -120,8 +146,7 @@ router.get('/verCuentas', async (req,res)=> {
             "SALDO": account[2],
             "SOBREGIRO_SALDO":account[3],
             "FECHA_CREACION": account[4],
-            "TIPO_CUENTA":account[5],
-            "LISTA_BEENEFICIAROS": account[6]
+            "TIPO_CUENTA":account[5]
         }
         cuentas.push(userSchema)
     });

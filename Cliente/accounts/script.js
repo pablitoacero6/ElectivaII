@@ -84,7 +84,8 @@ cerrarPopup6.addEventListener('click', function() {
     popup6.classList.remove('active');
 });
 
-var url = "http://localhost:3000";
+var url = "http://localhost:4000";
+const bodyTableAccounts = document.getElementById('bodyTableAccount');
 
 /* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
 
@@ -116,7 +117,7 @@ var opcionSeleccionadaDivisa = 'COP'
 function opcionSeleccionarDivisa() {
     const indice = document.getElementById('divisaList').selectedIndex;
     if(indice === -1) return; // Esto es cuando no hay elementos
-    const opcionSeleccionadaDivisa = document.getElementById('divisaList').options[indice].text;
+    opcionSeleccionadaDivisa = document.getElementById('divisaList').options[indice].text;
   };
 
 document.getElementById('divisaList').addEventListener("change",
@@ -140,17 +141,31 @@ document.getElementById('typeAccount').addEventListener("change",
     opcionSeleccionarTipoCuenta();
 })
 
+//extraer cliente titular
+var titularCuenta = ''
+
+function opcionSeleccionarTitularCuenta() {
+    const indice = document.getElementById('ClientList').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    titularCuenta = (document.getElementById('ClientList').options[indice].text).substr(0,5);
+  };
+
+document.getElementById('ClientList').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarTitularCuenta();
+})
 
 function crearCuenta(){
     fetch(url + "/crearCuenta", {
         method: 'POST',
         body: JSON.stringify({
             NO_ACCOUNT: document.getElementById('accountCod').value ,
+            ID_CLIENT: titularCuenta,
             CURRENCY: opcionSeleccionadaDivisa,
             BALANCE: document.getElementById('balanceAccount').value,
-            OVERSHOOT_VALUE: document.getElementById('balanceAccount').value * 0.25,
-            ACCOUNT_TYPE: opcionSeleccionadoTipoCuenta,
-            BENEFICIARY_LIST: null
+            /*OVERSHOOT_VALUE: document.getElementById('balanceAccount').value * 0.25,*/
+            ACCOUNT_TYPE: opcionSeleccionadoTipoCuenta
         }),
         headers: {
             'Accept': 'application/json',
@@ -171,13 +186,61 @@ document.getElementById("saveCreateAccount").addEventListener("click",
 
 /* MOSTRAR CUENTAS */
 
-/* MOSTRAR CLIENTE */
+/* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
 
-function mostrarCuentas(){
-    fetch(url + "/verCuentas").then(function(res) {
+function mostrarEditarClientes(){
+    fetch(url + "/verCliente").then(function(res) {
         return res.json();
     }).then(function (json) {
-        const body = document.getElementById('bodyTableAccount');
+        const body = document.getElementById('accountList');
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].ID_CLIENTE +" - "+ json[index].NOMBRES);
+            option.appendChild(textoOption);
+            body.appendChild(option);
+        }
+    })
+}
+
+document.getElementById('accounts').addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    mostrarEditarClientes();
+})
+
+/* MOSTRAR CLIENTE */
+
+var titularCuentas = ''
+
+function opcionSeleccionarTitularCuenta() {
+    const indice = document.getElementById('accountList').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    titularCuentas = (document.getElementById('accountList').options[indice].text).substr(0,5);
+  };
+
+document.getElementById('accountList').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarTitularCuenta();
+    bodyTableAccounts.innerHTML = ''
+    mostrarCuentas();
+})
+
+function mostrarCuentas(){
+    fetch(url + "/verCuentas", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIEN: titularCuentas
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        
         
         var count = Object.keys(json).length
         for (var i = 0; i < count ; i++) {
@@ -211,14 +274,9 @@ function mostrarCuentas(){
             
         
             // agrega la hilera al final de la tabla (al final del elemento tblbody)
-            body.appendChild(hilera);
+            bodyTableAccounts.appendChild(hilera);
           }
     })
 }
 
 
-document.getElementById('accounts').addEventListener("click", 
-(evt) => {
-    evt.preventDefault();
-    mostrarCuentas();
-})
