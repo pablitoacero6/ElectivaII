@@ -72,6 +72,8 @@ body {
     color: white;
 }
 
+
+
 #cards {
     width: 90%;
     height: 40%;
@@ -150,6 +152,13 @@ body {
     font-size: 16px;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
     border: none;
+    opacity: 0;
+}
+
+.boxCreate select {
+    width: 80%;
+    height: 52px;
+    margin-bottom: 15px;
     opacity: 0;
 }
 

@@ -15,16 +15,16 @@
         <div class="nav">            
             <nav>
                 <ul>
-                    <a href="../init/index.html"><li>Inicio</li></a>
-                </ul>
-                <ul>
                     <a href="../clients/index.html"><li>Clientes</li></a>
                 </ul>
                 <ul>
                     <a href="../accounts/index.html"><li>Cuentas</li></a>
                 </ul>
                 <ul>
-                    <a href="../transactions/index.html"><li>Transacciones</li></a>
+                    <a href="../transactions/index.html"><li>Transaccion interna</li></a>
+                </ul>
+                <ul>
+                    <a href="../transactionExt/index.html"><li>Transaccion externa</li></a>
                 </ul>
                 <ul>
                     <a href="../record/index.html"><li>Historial</li></a>
@@ -40,16 +40,6 @@
                 </header>
                 <section id="centerCard">
                     <img src="../img/account.png" alt="">
-                </section>
-            </a>            
-        </section>
-        <section id="cards">
-            <a href="#" id="editAccount">
-                <header>
-                <p>Editar cuenta</p>
-                </header>
-                <section id="centerCard">
-                    <img src="../img/editAccount.png" alt="">
                 </section>
             </a>            
         </section>
@@ -74,16 +64,6 @@
             </a>            
         </section>
         <section id="cards">
-            <a href="#" id="editBeneficiary">
-                <header>
-                    <p>Editar beneficiario</p>
-                </header>
-                <section id="centerCard">
-                    <img src="../img/editUser.png" alt="">
-                </section>
-            </a>            
-        </section>
-        <section id="cards">
             <a href="#" id="beneficiarys">
                 <header>
                     <p>Ver beneficiarios</p>
@@ -99,6 +79,7 @@
             <a href="" class="cerrarPopup" id="cerrarPopup1"><img src="../img/close.png" alt=""></a>
             <h2>Crear cuenta</h2>
             <div class="boxCreate">
+                
                 <input type="text" placeholder="001-00XXXX" id="accountCod">
                 <p>Seleccionar titular: </p>
                 <Select id="ClientListAccount">
@@ -118,28 +99,6 @@
             </div>
         </div>
     </div> 
-    <div class="overlay" id="overlay2">
-        <div class="popup" id="popup2">
-            <a href="" class="cerrarPopup" id="cerrarPopup2"><img src="../img/close.png" alt=""></a>
-            <h2>Editar cliente</h2>
-            <div class="boxCreateTwo">
-                <p>Seleccionar: </p>
-                <Select id="ClientList">
-                </Select>
-                <p>Nombres: </p>
-                <input type="text" placeholder="Nombres...">
-                <p>Apellidos: </p>
-                <input type="text" placeholder="Apellidos...">
-                <p>Fecha de nacimiento:</p>
-                <input type="text" placeholder="dd/mm/yyyy">
-                <p>No. de documento: </p>
-                <input type="text" placeholder="No. de documento CC...">
-                <p>Direccion: </p>
-                <input type="text" placeholder="Direccion...">
-            </div>
-            <input type="button" class="btn" value="Guardar">
-        </div>
-    </div>  
     <div class="overlay" id="overlay3">
         <div class="popup" id="popup3">
             <a href="#" class="cerrarPopup" id="cerrarPopup3"><img src="../img/close.png" alt=""></a>
@@ -165,7 +124,7 @@
                 </tbody>
             </table>
             </div>
-        </div>
+        
     </div>
     <div class="overlay" id="overlay4">
         <div class="popup" id="popup4">
@@ -178,47 +137,14 @@
                 <p>Seleccionar cuenta: </p>   
                 <Select id="accountListBen">
                 </Select>
-                <input type="text" placeholder="Cod. beneficiario" id="codBeneficiary">
-                <input type="text" placeholder="Nombre..." id="nameBeneficiary">
-                <input type="text" placeholder="Cuenta beneficiario" id="accountBeneficiary">
-                <input type="text" placeholder="No. de documento CC..." id="idBeneficiary">
-                <p>Banco al que pertenece: </p>   
-                <Select id="idBankBeneficiary">
-                    <option>001</option>
-                    <option>002</option>
-                    <option>003</option>
-                    <option>004</option>
-                    <option>005</option>
-                    <option>006</option>
-                    <option>007</option>
-                    <option>008</option>
-                </Select>
+                <p>Elegir beneficiario: </p>
+                <select name="" id="clientlistBeneficiarys"></select>       
+                <p>Elegir cuenta beneficiario: </p>
+                <select name="" id="accountlistBeneficiarys"></select>           
                 <input type="button" class="btn" value="Guardar" id="saveBeneficiary">
             </div>
         </div>
     </div> 
-    <div class="overlay" id="overlay5">
-        <div class="popup" id="popup5">
-            <a href="" class="cerrarPopup" id="cerrarPopup5"><img src="../img/close.png" alt=""></a>
-            <h2>Editar cliente</h2>
-            <div class="boxCreateTwo">
-                <p>Seleccionar: </p>
-                <Select id="ClientList">
-                </Select>
-                <p>Nombres: </p>
-                <input type="text" placeholder="Nombres...">
-                <p>Apellidos: </p>
-                <input type="text" placeholder="Apellidos...">
-                <p>Fecha de nacimiento:</p>
-                <input type="text" placeholder="dd/mm/yyyy">
-                <p>No. de documento: </p>
-                <input type="text" placeholder="No. de documento CC...">
-                <p>Direccion: </p>
-                <input type="text" placeholder="Direccion...">
-            </div>
-            <input type="button" class="btn" value="Guardar">
-        </div>
-    </div>  
     <div class="overlay" id="overlay6">
         <div class="popup" id="popup6">
             <a href="" class="cerrarPopup" id="cerrarPopup6"><img src="../img/close.png" alt=""></a>

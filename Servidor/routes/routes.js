@@ -114,13 +114,77 @@ router.get('/mensaje', async (req,res)=> {
     console.log(result);    
 });
 
+router.post('/transaccionInterna', async (req,res)=> {
+    const client = req.body
 
+    sql="INSERT INTO transaccion_tab VALUES (transaccion('"+ 
+    + client.ID_TRANSACCION + "','"
+    + client.ID_CLIENTE + "','"
+    + client.NO_CUENTACLIENTE + "','"
+    + client.ID_BENEFICIARIO + "','"
+    + client.NO_CUENTABENEFICIARIO + "','001'," + client.VALOR + ",'"
+    + client.MONEDA + "',"
+    + "sysdate,'0','1'))"
+    
+    console.log(sql)
+
+    let result = await DB.Open(sql,[],true);
+    console.log(result); 
+
+    res.end('202')
+});
+
+router.get('/verRegistro', async (req,res)=> {
+    const usuarios =[];
+    sql ="select * from registro_tab";
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+    result.rows.map(user => {
+        let userSchema ={
+            "ID_REGISTRO": user[0],
+            "ID_CLIENTE":user[1],
+            "NUMERO_CUENTA": user[2],
+            "ID_BANCO":user[3],
+            "MONTO": user[4],
+            "DIVISA":user[5],
+            "TIPO": user[6]
+        }
+        usuarios.push(userSchema)
+    });
+   res.json(usuarios);
+});
 
 
 router.get('/verCliente', async (req,res)=> {
     const usuarios =[];
     sql ="select id_cliente,nombres,apellidos,fecha_nacimiento,"+
     "tipo_documento,numero_documento,direccion,estado_cliente from cliente_tab";
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+    result.rows.map(user => {
+        let userSchema ={
+            "ID_CLIENTE": user[0],
+            "NOMBRES":user[1],
+            "APELLIDOS": user[2],
+            "FECHA_NACIMIENTO":user[3],
+            "TIPO_DOCUMENTO": user[4],
+            "NUMERO_DOCUMENTO":user[5],
+            "DIRECCION": user[6],
+            "ESTADO_CLIENTE":user[7]
+        }
+        usuarios.push(userSchema)
+    });
+   res.json(usuarios);
+});
+
+router.post('/verClienteUno', async (req,res)=> {
+    const client = req.body
+    const usuarios =[];
+    sql ="select id_cliente,nombres,apellidos,fecha_nacimiento,"+
+    "tipo_documento,numero_documento,direccion,estado_cliente from cliente_tab "+
+    "where id_cliente ='" + client.ID_CLIENTE+"'";
 
     let result = await DB.Open(sql,[],false);
     console.log(result);    
@@ -165,6 +229,26 @@ router.post('/verCuentas', async (req,res)=> {
    res.json(cuentas);
 });
 
+router.post('/verCuentasMoneda', async (req,res)=> {
+    const client = req.body
+    const cuentas =[];
+    sql="SELECT Emp.DIVISA" +
+    " FROM cliente_tab E, TABLE(E.lista_cuentas) Emp" +
+    " where E.id_cliente ='" + client.ID_CLIEN + "'" + 
+    " and Emp.NUMERO_CUENTA='" + client.NO_ACCOUNT + "'"
+    console.log(sql)
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+    result.rows.map(account => {
+        let userSchema ={
+            "DIVISA":account[0]
+        }
+        cuentas.push(userSchema)
+    });
+   res.json(cuentas);
+});
+
 router.post('/verBeneficiarios', async (req,res)=> {
     const client = req.body
     const beneficiarys =[];
@@ -172,6 +256,32 @@ router.post('/verBeneficiarios', async (req,res)=> {
     sql="SELECT ben.* FROM cliente_tab E, TABLE(E.lista_cuentas) Emp , table(emp.lista_beneficiarios) " +
     "ben where E.id_cliente = '" + client.ID_CLIENTE + "' " +
     "and  emp.numero_cuenta = '" + client.NO_ACCOUNT + "'"
+    console.log(sql)
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+    result.rows.map(account => {
+        let userSchema ={
+            "ID_BENEFICIARIO": account[0],
+            "NOMBRE":account[1],
+            "NUMERO_CUENTA": account[2],
+            "TIPO_DOCUMENTO":account[3],
+            "NUMERO_DOCUMENTO": account[4],
+            "ID_BANCO":account[5]
+        }
+        beneficiarys.push(userSchema)
+    });
+   res.json(beneficiarys);
+});
+
+router.post('/verBeneficiariosCodMon', async (req,res)=> {
+    const client = req.body
+    const beneficiarys =[];
+
+    sql="SELECT ben.* FROM cliente_tab E, TABLE(E.lista_cuentas) Emp , table(emp.lista_beneficiarios) " +
+    "ben where E.id_cliente = '" + client.ID_CLIENTE + "' " +
+    "and  emp.numero_cuenta = '" + client.NO_ACCOUNT + "'" + 
+    "and  ben.id_beneficiario ='" + client.ID_BENEFICIARIO + "'"
     console.log(sql)
 
     let result = await DB.Open(sql,[],false);

@@ -60,6 +60,40 @@ function verifyConnection(){
     })
 }
 
+/* HACER CONSECUTIVO */
+var consecutivo = []
+
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) {        
+        const body = document.getElementById('codCliente');
+        body.innerHTML = ''
+        var count = Object.keys(json).length
+        for (let index = 00000; index < 00100; index++) {
+            if(10>index & index >= 0){
+                consecutivo.push("0000" + index)
+            }else{
+                consecutivo.push("000" + index)
+            }
+            
+        }
+        for (var i = 0; i < count ; i++) {  
+            for (let index = 00000; index < 00050; index++) {
+                console.log(consecutivo[index])
+                if(json[i].ID_CLIENTE == consecutivo[index]){
+                    consecutivo.splice(index,1)
+                }
+            }
+        }
+        for (let index = 0; index < consecutivo.length; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(consecutivo[index]);
+            option.appendChild(textoOption);
+            body.appendChild(option);
+        }
+    })
+
+
 /* CREAR CLIENTE */
     
 

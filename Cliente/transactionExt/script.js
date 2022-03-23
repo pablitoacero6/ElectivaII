@@ -4,37 +4,6 @@ var url = "http://localhost:4000";
 const bodyAcoount = document.getElementById('listaCuentasTitular')
 const bodyBeneficiary = document.getElementById('beneficiariosLista')
 
-
-/* HACER CONSECUTIVO */
-var consecutivo = []
-
-    fetch(url + "/verRegistro").then(function(res) {
-        return res.json();
-    }).then(function (json) {        
-        const body = document.getElementById('codTransaccion');
-        body.innerHTML = ''
-        var count = Object.keys(json).length
-        for (let index = 00100; index < 00500; index++) {
-                consecutivo.push("00" + index)          
-        }
-        for (var i = 0; i < count ; i++) {  
-            for (let index = 00000; index < consecutivo.length; index++) {
-                console.log(json[i].ID_REGISTRO)
-                if(("00" + json[i].ID_REGISTRO) == consecutivo[index]){
-                    consecutivo.splice(index,1)
-                }
-            }
-        }
-        for (let index = 0; index < consecutivo.length; index++) {
-            var option = document.createElement("option")
-            var textoOption = document.createTextNode(consecutivo[index]);
-            option.appendChild(textoOption);
-            body.appendChild(option);
-        }
-    })
-
-
-
 fetch(url + "/verCliente").then(function(res) {
     return res.json();
 }).then(function (json) {
@@ -220,31 +189,13 @@ function pintarCuentaMonBene(){
     })
 }
 
-/* eleccion codigo transaccion */
-
-var codTrans = ''
-
-function seleccionCod() {
-    const indice = document.getElementById('codTransaccion').selectedIndex;
-    if(indice === -1) return; // Esto es cuando no hay elementos
-    codTrans = document.getElementById('codTransaccion').options[indice].text;
-  };
-
-document.getElementById('codTransaccion').addEventListener("change",
-(evt) => {
-    evt.preventDefault();
-    beneficiarioSeleccionado();    
-    seleccionCod();  
-    
-})
-
 /* HACER TRANSACCION */
 
-function hacerTransaccion(){
+function crearCuenta(){
     fetch(url + "/transaccionInterna", {
         method: 'POST',
         body: JSON.stringify({
-            ID_TRANSACCION: codTrans,
+            ID_TRANSACCION: document.getElementById('idTransaccion').value,
             ID_CLIENTE: titularSeleccionado,
             NO_CUENTACLIENTE: cuentaTSeleccionada,
             ID_BENEFICIARIO: codBenSelec,
@@ -265,6 +216,6 @@ function hacerTransaccion(){
 
 document.getElementById('sendTransfer').addEventListener("click",
 (evt) => {
-    hacerTransaccion();
+    crearCuenta();
 })
 

@@ -28,11 +28,6 @@ createAccount.addEventListener('click', function() {
     popup1.classList.add('active');
 });
 
-editAccount.addEventListener('click', function(){
-    overlay2.classList.add('active');
-    popup2.classList.add('active');
-});
-
 accounts.addEventListener('click', function() {
     overlay3.classList.add('active');
     popup3.classList.add('active');
@@ -43,10 +38,6 @@ createBeneficiary.addEventListener('click', function() {
     popup4.classList.add('active');
 });
 
-editBeneficiary.addEventListener('click', function(){
-    overlay5.classList.add('active');
-    popup5.classList.add('active');
-});
 
 Beneficiarys.addEventListener('click', function() {
     overlay6.classList.add('active');
@@ -58,10 +49,6 @@ cerrarPopup1.addEventListener('click', function() {
     popup1.classList.remove('active');
 });
 
-cerrarPopup2.addEventListener('click', function() {
-    overlay2.classList.remove('active');
-    popup2.classList.remove('active');
-});
 
 cerrarPopup3.addEventListener('click', function() {
     overlay3.classList.remove('active');
@@ -74,10 +61,6 @@ cerrarPopup4.addEventListener('click', function() {
     popup4.classList.remove('active');
 });
 
-cerrarPopup5.addEventListener('click', function() {
-    overlay5.classList.remove('active');
-    popup5.classList.remove('active');
-});
 
 cerrarPopup6.addEventListener('click', function() {
     overlay6.classList.remove('active');
@@ -85,6 +68,42 @@ cerrarPopup6.addEventListener('click', function() {
 });
 
 var url = "http://localhost:4000";
+const bodycodAcoount = document.getElementById('codigoCuenta')
+
+var consecutivo = []
+
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) { 
+        var count = Object.keys(json).length
+        for (var i = 0; i < count ; i++) {
+                    
+            fetch(url + "/verCuentas", {
+                method: 'POST',
+                body: JSON.stringify({
+                    ID_CLIEN: json[i].ID_CLIENTE
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(function(res) {
+                return res.json();
+            }).then(function (json) {      
+                var count = Object.keys(json).length
+                for (var j = 0; j < count ; j++) {
+                    consecutivo.push(json[j].NO_CUENTA)                    
+                  }
+            })
+            
+        }
+        
+        
+    })
+    
+
+    
+
 
 
 //----------------------------------------------------------------------------
@@ -105,6 +124,7 @@ function mostrarClienteCrearCuenta(){
             var textoOption = document.createTextNode(json[index].ID_CLIENTE +" - "+ json[index].NOMBRES);
             option.appendChild(textoOption);
             body.appendChild(option);
+            
         }
     })
 }
@@ -113,6 +133,7 @@ document.getElementById('createAccount').addEventListener("click",
 (evt) => {
     evt.preventDefault();
     mostrarClienteCrearCuenta();
+
 })
 
 
@@ -188,9 +209,24 @@ function crearCuenta(){
 document.getElementById("saveCreateAccount").addEventListener("click", 
 (evt) => {
     evt.preventDefault();
-    crearCuenta();
+    if(comprobarDatosCrearCuenta()==0){
+        location.reload()
+    }else{  
+        crearCuenta();
+    }
 })
 
+function comprobarDatosCrearCuenta(){
+    for (let index = 0; index < consecutivo.length; index++) {
+        const element = consecutivo[index];
+        console.log(element)
+        if(element == document.getElementById('accountCod').value){
+            confirm("El codigo de la cuenta ya existe")
+            return 0
+        }
+        
+    }
+}
 //---------------------------------------------------------------------------------
 
 /* MOSTRAR CUENTAS */
@@ -378,24 +414,155 @@ document.getElementById('accountListBen').addEventListener("change",
 (evt) => {
     evt.preventDefault();
     opcionSeleccionarCuentaTitular();
+    document.getElementById('clientlistBeneficiarys').innerHTML = ''
+    mostrarClientesparaBene();
 })
 
-//extraer id bank del beneficiary
 
-var idBank = ''
-function opcionSeleccionarIdBancoBeneficiario() {
-    const indice = document.getElementById('idBankBeneficiary').selectedIndex;
+function mostrarClientesparaBene(){
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        const body = document.getElementById('clientlistBeneficiarys');
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].ID_CLIENTE +" - "+ json[index].NOMBRES);
+            option.appendChild(textoOption);
+            body.appendChild(option);
+        }
+    })
+}
+
+var beneficiarioCod = ''
+function seleccionarBeneficiarioAAsociar() {
+    const indice = document.getElementById('clientlistBeneficiarys').selectedIndex;
     if(indice === -1) return; // Esto es cuando no hay elementos
-    idBank = document.getElementById('idBankBeneficiary').options[indice].text;
+    beneficiarioCod = (document.getElementById('clientlistBeneficiarys').options[indice].text).substr(0,5);
   };
 
-document.getElementById('idBankBeneficiary').addEventListener("change",
+document.getElementById('clientlistBeneficiarys').addEventListener("change",
 (evt) => {
     evt.preventDefault();
-    opcionSeleccionarIdBancoBeneficiario();
+    seleccionarBeneficiarioAAsociar();
+    document.getElementById('accountlistBeneficiarys').innerHTML = ''
+    console.log(beneficiarioCod)
+    mostrarCuentasBene();
 })
 
+function mostrarCuentasBene(){
+    fetch(url + "/verCuentas", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIEN: beneficiarioCod
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].NO_CUENTA);
+            option.appendChild(textoOption);
+            document.getElementById('accountlistBeneficiarys').appendChild(option);
+        }
+    })
+}
+var cuentaBeneficiarioSelecc = ''
+function seleccionarCuentaBe() {
+    const indice = document.getElementById('accountlistBeneficiarys').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    cuentaBeneficiarioSelecc = document.getElementById('accountlistBeneficiarys').options[indice].text;
+  };
+
+  
+var primeraMoneda = ''
+var segundaMoneda = ''
+
+document.getElementById('accountlistBeneficiarys').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    seleccionarCuentaBe();
+    setearDatos();
+    sacarMonedaPrimera()
+    sacarMonedaSegunda()
+})
+
+var seteoNombre = ''
+var seteoNoDocumento = ''
+
+function setearDatos(){
+    fetch(url + "/verClienteUno", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIENTE: beneficiarioCod
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            seteoNombre = json[index].NOMBRES;
+            seteoNoDocumento = json[index].NUMERO_DOCUMENTO;
+            console.log(seteoNombre + seteoNoDocumento)
+        }
+    })
+}
+
 // crear beneficiario
+
+
+function sacarMonedaPrimera(){
+    fetch(url + "/verCuentasMoneda", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIEN: titularBeneficiario,
+            NO_ACCOUNT: cuentaTitular
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            console.log("aa" + json[index].DIVISA)
+            primeraMoneda = json[index].DIVISA;
+        }
+    })
+}
+
+function sacarMonedaSegunda(){
+    fetch(url + "/verCuentasMoneda", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIEN: beneficiarioCod,
+            NO_ACCOUNT: cuentaBeneficiarioSelecc
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            segundaMoneda = json[index].DIVISA;
+
+        }
+    })
+}
 
 function crearBeneficiario(){
     fetch(url + "/crearBeneficiario", {
@@ -403,11 +570,11 @@ function crearBeneficiario(){
         body: JSON.stringify({
             ID_BENEFICIARY: titularBeneficiario,
             NO_ACCOUNT: cuentaTitular,
-            ID_CLIENT: document.getElementById('codBeneficiary').value,
-            NAMES: document.getElementById('nameBeneficiary').value,
-            BEN_ACCOUNT: document.getElementById('accountBeneficiary').value,
-            NO_DOCUMENT: document.getElementById('idBeneficiary').value,
-            ID_BANK: idBank
+            ID_CLIENT: beneficiarioCod,
+            NAMES: seteoNombre,
+            BEN_ACCOUNT: cuentaBeneficiarioSelecc,
+            NO_DOCUMENT: seteoNoDocumento,
+            ID_BANK: cuentaTitular.substring(0,3)
         }),
         headers: {
             'Accept': 'application/json',
@@ -423,8 +590,22 @@ function crearBeneficiario(){
 document.getElementById("saveBeneficiary").addEventListener("click", 
 (evt) => {
     evt.preventDefault();
-    crearBeneficiario();
+    
+    console.log(primeraMoneda + segundaMoneda)
+    if(comprobarDatosCrearBeneficiario() == 0){
+        location.reload()
+    }else{  
+        crearBeneficiario();
+    }
 })
+
+function comprobarDatosCrearBeneficiario(){
+    console.log(primeraMoneda + segundaMoneda)
+    if(primeraMoneda != segundaMoneda){
+        confirm("Las cuentas tienen monedas diferentes")
+        return 0;
+    }
+}
 
 //----------------------------------------------------------------------------------
 /* MOSTRAR BENEFICIARIOS */

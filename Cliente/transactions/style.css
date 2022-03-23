@@ -63,11 +63,17 @@ body {
     border-left: 1px solid black;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
+    overflow-y: scroll;
+}
+
+.center select {
+    width: 100px;
+    height: 40px;
 }
 
 .center input {
     font-size: 14px;
-    height: 70%;
+    height: 40px;
 }
 
 #transaction {
@@ -77,6 +83,10 @@ body {
 
 #transaction h2{
     margin: 30px;
+}
+
+#transaction select {
+    height: 40px;
 }
 
 #firstAccount {
@@ -99,6 +109,7 @@ body {
     margin: 30px auto;
     display: block;
     text-align: center;
+    border: none;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .3);
 }
 
@@ -109,6 +120,7 @@ body {
     background-color: white;
     color: black;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, .3);
+    font-weight: 600;
 }
 
 #sendTransfer:hover {
