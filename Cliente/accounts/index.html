@@ -101,7 +101,7 @@
             <div class="boxCreate">
                 <input type="text" placeholder="001-00XXXX" id="accountCod">
                 <p>Seleccionar titular: </p>
-                <Select id="ClientList">
+                <Select id="ClientListAccount">
                 </Select>
                 <p>Divisa: </p>
                 <Select id="divisaList">
@@ -170,15 +170,30 @@
     <div class="overlay" id="overlay4">
         <div class="popup" id="popup4">
             <a href="" class="cerrarPopup" id="cerrarPopup4"><img src="../img/close.png" alt=""></a>
-            <h2>Crear cliente</h2>
+            <h2>Crear beneficiario</h2>
             <div class="boxCreate">
-                <input type="text" placeholder="Nombres...">
-                <input type="text" placeholder="Apellidos...">
-                <p>Fecha de nacimiento:</p>
-                <input type="text" placeholder="dd/mm/yyyy">
-                <input type="text" placeholder="No. de documento CC...">
-                <input type="text" placeholder="Direccion...">
-                <input type="button" class="btn" value="Guardar">
+                <p>Seleccionar cliente: </p>   
+                <Select id="clientListBen">
+                </Select>
+                <p>Seleccionar cuenta: </p>   
+                <Select id="accountListBen">
+                </Select>
+                <input type="text" placeholder="Cod. beneficiario" id="codBeneficiary">
+                <input type="text" placeholder="Nombre..." id="nameBeneficiary">
+                <input type="text" placeholder="Cuenta beneficiario" id="accountBeneficiary">
+                <input type="text" placeholder="No. de documento CC..." id="idBeneficiary">
+                <p>Banco al que pertenece: </p>   
+                <Select id="idBankBeneficiary">
+                    <option>001</option>
+                    <option>002</option>
+                    <option>003</option>
+                    <option>004</option>
+                    <option>005</option>
+                    <option>006</option>
+                    <option>007</option>
+                    <option>008</option>
+                </Select>
+                <input type="button" class="btn" value="Guardar" id="saveBeneficiary">
             </div>
         </div>
     </div> 
@@ -207,30 +222,28 @@
     <div class="overlay" id="overlay6">
         <div class="popup" id="popup6">
             <a href="" class="cerrarPopup" id="cerrarPopup6"><img src="../img/close.png" alt=""></a>
-            <h2>Ver clientes</h2>             
+            <h2>Ver beneficiarios</h2>             
             <div class="boxCreateThree">
-                <p>Seleccionar: </p>   
-                <Select id="ClientList">
+                <p>Seleccionar cliente Titular: </p>   
+                <Select id="ClientsListBen">
+                </Select>
+                <p>Seleccionar cuenta: </p>   
+                <Select id="accountsListBen">
                 </Select>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Fecha de nacimiento</th>
-                        <th>No. de documento</th>
-                        <th>Direccion</th>
+                        <th>Cod beneficiario</th>
+                        <th>Nombre</th>
+                        <th>No. cuenta</th>
+                        <th>Tipo de documento</th>
+                        <th>No. documento</th>
+                        <th>Id. Banco</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>..</td>
-                        <td>..</td>
-                        <td>..</td>
-                        <td>..</td>
-                        <td>..</td>
-                    </tr>
+                <tbody id="tableBeneficiarys">
+                    
                 </tbody>
             </table>
         </div>

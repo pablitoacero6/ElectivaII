@@ -51,7 +51,6 @@ router.post('/crearCuenta', async(req,res) => {
     + "'); End;"
 
     let result = await DB.Open(sql,[],true);
-    console.log(result); 
 
     res.end('202')
 });
@@ -86,13 +85,26 @@ router.get('/prueba', async (req,res)=> {
     console.log(result);    
 });
 
+router.post('/crearBeneficiario', async(req,res) => {
+    const account = req.body
 
+    sql= "Begin add_beneficiario("
+    + "'" + account.ID_CLIENT + "'" + ","
+    + "'" + account.NO_ACCOUNT + "'" + ","
+    + "'" + account.ID_BENEFICIARY + "'" + "," 
+    + "'" + account.NAMES + "'" + ","
+    + "'" + account.BEN_ACCOUNT + "'" + ","
+    + "'CC'" + ","
+    + "'" + account.NO_DOCUMENT + "'" + ","
+    + "'" + account.ID_BANK 
+    + "'); End;"
 
-router.get('/beneficiario', async (req,res)=> {
-    sql ="select * from beneficiario_tab";
+    console.log(sql)
 
-    let result = await DB.Open(sql,[],false);
-    console.log(result);    
+    let result = await DB.Open(sql,[],true);
+    console.log(result); 
+
+    res.end('202')
 });
 
 router.get('/mensaje', async (req,res)=> {
@@ -151,6 +163,31 @@ router.post('/verCuentas', async (req,res)=> {
         cuentas.push(userSchema)
     });
    res.json(cuentas);
+});
+
+router.post('/verBeneficiarios', async (req,res)=> {
+    const client = req.body
+    const beneficiarys =[];
+
+    sql="SELECT ben.* FROM cliente_tab E, TABLE(E.lista_cuentas) Emp , table(emp.lista_beneficiarios) " +
+    "ben where E.id_cliente = '" + client.ID_CLIENTE + "' " +
+    "and  emp.numero_cuenta = '" + client.NO_ACCOUNT + "'"
+    console.log(sql)
+
+    let result = await DB.Open(sql,[],false);
+    console.log(result);    
+    result.rows.map(account => {
+        let userSchema ={
+            "ID_BENEFICIARIO": account[0],
+            "NOMBRE":account[1],
+            "NUMERO_CUENTA": account[2],
+            "TIPO_DOCUMENTO":account[3],
+            "NUMERO_DOCUMENTO": account[4],
+            "ID_BANCO":account[5]
+        }
+        beneficiarys.push(userSchema)
+    });
+   res.json(beneficiarys);
 });
 
 

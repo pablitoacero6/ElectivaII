@@ -85,15 +85,20 @@ cerrarPopup6.addEventListener('click', function() {
 });
 
 var url = "http://localhost:4000";
+
+
+//----------------------------------------------------------------------------
 const bodyTableAccounts = document.getElementById('bodyTableAccount');
 
-/* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
+/* CREAR CUENTA */
 
-function mostrarEditarClientes(){
+/* MOSTRAR CLIENTES EN crear cuenta */
+
+function mostrarClienteCrearCuenta(){
     fetch(url + "/verCliente").then(function(res) {
         return res.json();
     }).then(function (json) {
-        const body = document.getElementById('ClientList');
+        const body = document.getElementById('ClientListAccount');
         var count = Object.keys(json).length
         for (let index = 0; index < count; index++) {
             var option = document.createElement("option")
@@ -107,12 +112,12 @@ function mostrarEditarClientes(){
 document.getElementById('createAccount').addEventListener("click", 
 (evt) => {
     evt.preventDefault();
-    mostrarEditarClientes();
+    mostrarClienteCrearCuenta();
 })
 
-/* CREAR CUENTA */
 
 // extraer divisas
+
 var opcionSeleccionadaDivisa = 'COP'
 function opcionSeleccionarDivisa() {
     const indice = document.getElementById('divisaList').selectedIndex;
@@ -127,6 +132,7 @@ document.getElementById('divisaList').addEventListener("change",
 })
 
 // extraer tipo de cuenta
+
 var opcionSeleccionadoTipoCuenta = 'NOR'
 
 function opcionSeleccionarTipoCuenta() {
@@ -142,19 +148,21 @@ document.getElementById('typeAccount').addEventListener("change",
 })
 
 //extraer cliente titular
-var titularCuenta = ''
+var titularCuenta = ' '
 
-function opcionSeleccionarTitularCuenta() {
-    const indice = document.getElementById('ClientList').selectedIndex;
+function opcionSeleccionarTitularCuentaCrear() {
+    const indice = document.getElementById('ClientListAccount').selectedIndex;
     if(indice === -1) return; // Esto es cuando no hay elementos
-    titularCuenta = (document.getElementById('ClientList').options[indice].text).substr(0,5);
-  };
+    titularCuenta = (document.getElementById('ClientListAccount').options[indice].text).substr(0,5);
+};
 
-document.getElementById('ClientList').addEventListener("change",
+document.getElementById('ClientListAccount').addEventListener("change",
 (evt) => {
     evt.preventDefault();
-    opcionSeleccionarTitularCuenta();
+    opcionSeleccionarTitularCuentaCrear();
 })
+
+//crear cuenta
 
 function crearCuenta(){
     fetch(url + "/crearCuenta", {
@@ -164,7 +172,6 @@ function crearCuenta(){
             ID_CLIENT: titularCuenta,
             CURRENCY: opcionSeleccionadaDivisa,
             BALANCE: document.getElementById('balanceAccount').value,
-            /*OVERSHOOT_VALUE: document.getElementById('balanceAccount').value * 0.25,*/
             ACCOUNT_TYPE: opcionSeleccionadoTipoCuenta
         }),
         headers: {
@@ -184,11 +191,13 @@ document.getElementById("saveCreateAccount").addEventListener("click",
     crearCuenta();
 })
 
+//---------------------------------------------------------------------------------
+
 /* MOSTRAR CUENTAS */
 
-/* MOSTRAR CLIENTES EN EL SELECTOR DE EDTIAR */
+/* MOSTRAR CLIENTES EN EL SELECTOR DE cuentas */
 
-function mostrarEditarClientes(){
+function mostrarClientesCuentas(){
     fetch(url + "/verCliente").then(function(res) {
         return res.json();
     }).then(function (json) {
@@ -206,10 +215,10 @@ function mostrarEditarClientes(){
 document.getElementById('accounts').addEventListener("click", 
 (evt) => {
     evt.preventDefault();
-    mostrarEditarClientes();
+    mostrarClientesCuentas();
 })
 
-/* MOSTRAR CLIENTE */
+/* elegir cliente */
 
 var titularCuentas = ''
 
@@ -226,6 +235,8 @@ document.getElementById('accountList').addEventListener("change",
     bodyTableAccounts.innerHTML = ''
     mostrarCuentas();
 })
+
+// mostrar cuentas
 
 function mostrarCuentas(){
     fetch(url + "/verCuentas", {
@@ -279,4 +290,275 @@ function mostrarCuentas(){
     })
 }
 
+/* BENEFICIARIOS */
 
+/* CREAR BENEFICIARIOS */
+
+/* MOSTRAR CLIENTES EN EL SELECTOR DE crear beneficiario */
+
+function mostrarClientesBeneficiarios(){
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        const body = document.getElementById('clientListBen');
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].ID_CLIENTE +" - "+ json[index].NOMBRES);
+            option.appendChild(textoOption);
+            body.appendChild(option);
+        }
+    })
+}
+
+document.getElementById('createBeneficiary').addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    mostrarClientesBeneficiarios();
+})
+
+/* mostrar cuentas de los clientes en crear beneficiario */
+
+
+
+
+/* elegir cliente */
+
+var titularBeneficiario = ''
+const bodyAccountListBeneficiary = document.getElementById('accountListBen');
+
+function opcionSeleccionarTitularBeneficiario() {
+    const indice = document.getElementById('clientListBen').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    titularBeneficiario = (document.getElementById('clientListBen').options[indice].text).substr(0,5);
+  };
+
+document.getElementById('clientListBen').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarTitularBeneficiario();
+    bodyAccountListBeneficiary.innerHTML = ''
+    mostrarCuentasBeneficiario();
+})
+
+function mostrarCuentasBeneficiario(){
+    fetch(url + "/verCuentas", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIEN: titularBeneficiario
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].NO_CUENTA);
+            option.appendChild(textoOption);
+            bodyAccountListBeneficiary.appendChild(option);
+        }
+    })
+}
+
+//extraer cuenta del titular del beneficiario
+
+var cuentaTitular = ''
+
+function opcionSeleccionarCuentaTitular() {
+    const indice = document.getElementById('accountListBen').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    cuentaTitular = document.getElementById('accountListBen').options[indice].text;
+  };
+
+document.getElementById('accountListBen').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarCuentaTitular();
+})
+
+//extraer id bank del beneficiary
+
+var idBank = ''
+function opcionSeleccionarIdBancoBeneficiario() {
+    const indice = document.getElementById('idBankBeneficiary').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    idBank = document.getElementById('idBankBeneficiary').options[indice].text;
+  };
+
+document.getElementById('idBankBeneficiary').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarIdBancoBeneficiario();
+})
+
+// crear beneficiario
+
+function crearBeneficiario(){
+    fetch(url + "/crearBeneficiario", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_BENEFICIARY: titularBeneficiario,
+            NO_ACCOUNT: cuentaTitular,
+            ID_CLIENT: document.getElementById('codBeneficiary').value,
+            NAMES: document.getElementById('nameBeneficiary').value,
+            BEN_ACCOUNT: document.getElementById('accountBeneficiary').value,
+            NO_DOCUMENT: document.getElementById('idBeneficiary').value,
+            ID_BANK: idBank
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+    .catch(error => console.error('Error: ', error))
+    .then(response => {
+        return console.log('Success: ', response);
+    })
+}
+
+document.getElementById("saveBeneficiary").addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    crearBeneficiario();
+})
+
+//----------------------------------------------------------------------------------
+/* MOSTRAR BENEFICIARIOS */
+
+const bodyTableBeneficiarys = document.getElementById('tableBeneficiarys');
+
+function mostrarCliBeneficiarios(){
+    fetch(url + "/verCliente").then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        const body = document.getElementById('ClientsListBen');
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].ID_CLIENTE +" - "+ json[index].NOMBRES);
+            option.appendChild(textoOption);
+            body.appendChild(option);
+        }
+    })
+}
+
+document.getElementById('beneficiarys').addEventListener("click", 
+(evt) => {
+    evt.preventDefault();
+    mostrarCliBeneficiarios();
+})
+
+var titularBeneficiarios = ''
+const bodyAccountListBeneficiarys = document.getElementById('accountsListBen');
+
+function opcionSeleccionarTitularBeneficiarios() {
+    const indice = document.getElementById('ClientsListBen').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    titularBeneficiarios = (document.getElementById('ClientsListBen').options[indice].text).substr(0,5);
+  };
+
+document.getElementById('ClientsListBen').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarTitularBeneficiarios();
+    bodyAccountListBeneficiarys.innerHTML = ''
+    mostrarCuentasBeneficiarios();
+})
+
+function mostrarCuentasBeneficiarios(){
+    fetch(url + "/verCuentas", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIEN: titularBeneficiarios
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        var count = Object.keys(json).length
+        for (let index = 0; index < count; index++) {
+            var option = document.createElement("option")
+            var textoOption = document.createTextNode(json[index].NO_CUENTA);
+            option.appendChild(textoOption);
+            bodyAccountListBeneficiarys.appendChild(option);
+        }
+    })
+}
+
+//extraer cuenta del titular del beneficiario
+
+var cuentaTitularBeneficiarios = ''
+
+function opcionSeleccionarCuentaTitularBeneficiarios() {
+    const indice = document.getElementById('accountsListBen').selectedIndex;
+    if(indice === -1) return; // Esto es cuando no hay elementos
+    cuentaTitularBeneficiarios = document.getElementById('accountsListBen').options[indice].text;
+  };
+
+document.getElementById('accountsListBen').addEventListener("change",
+(evt) => {
+    evt.preventDefault();
+    opcionSeleccionarCuentaTitularBeneficiarios();
+    bodyTableBeneficiarys.innerHTML = ''
+    mostrarBeneficiarios();
+})
+
+function mostrarBeneficiarios(){
+    fetch(url + "/verBeneficiarios", {
+        method: 'POST',
+        body: JSON.stringify({
+            ID_CLIENTE: titularBeneficiarios,
+            NO_ACCOUNT: cuentaTitularBeneficiarios
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(function(res) {
+        return res.json();
+    }).then(function (json) {
+        
+        
+        var count = Object.keys(json).length
+        for (var i = 0; i < count ; i++) {
+
+            var hilera = document.createElement("tr");
+
+            var celda1 = document.createElement("td");
+            var textoCelda1 = document.createTextNode(json[i].ID_BENEFICIARIO);
+            celda1.appendChild(textoCelda1);
+            var celda2 = document.createElement("td");
+            var textoCelda2 = document.createTextNode(json[i].NOMBRE);
+            celda2.appendChild(textoCelda2);
+            var celda3 = document.createElement("td");
+            var textoCelda3 = document.createTextNode(json[i].NUMERO_CUENTA);
+            celda3.appendChild(textoCelda3);
+            var celda4 = document.createElement("td");
+            var textoCelda4 = document.createTextNode(json[i].TIPO_DOCUMENTO);
+            celda4.appendChild(textoCelda4);
+            var celda5 = document.createElement("td");
+            var textoCelda5 = document.createTextNode(json[i].NUMERO_DOCUMENTO);
+            celda5.appendChild(textoCelda5);
+            var celda6 = document.createElement("td");
+            var textoCelda6 = document.createTextNode(json[i].ID_BANCO);
+            celda6.appendChild(textoCelda6);
+            hilera.appendChild(celda1);
+            hilera.appendChild(celda2);
+            hilera.appendChild(celda3);
+            hilera.appendChild(celda4);
+            hilera.appendChild(celda5);
+            hilera.appendChild(celda6);
+            
+        
+            // agrega la hilera al final de la tabla (al final del elemento tblbody)
+            bodyTableBeneficiarys.appendChild(hilera);
+          }
+    })
+}
