@@ -46,9 +46,8 @@ router.post('/crearCuenta', async(req,res) => {
     + "'" + account.NO_ACCOUNT + "'" + ","
     + "'" + account.ID_CLIENT + "'" + ","
     + "'" + account.CURRENCY + "'" + ","
-    + account.BALANCE + "," 
-    + "'" + account.ACCOUNT_TYPE 
-    + "'); End;"
+    + account.BALANCE 
+    + "); End;"
 
     let result = await DB.Open(sql,[],true);
 
@@ -209,7 +208,7 @@ router.post('/verClienteUno', async (req,res)=> {
 router.post('/verCuentas', async (req,res)=> {
     const client = req.body
     const cuentas =[];
-    sql="SELECT Emp.NUMERO_CUENTA, Emp.DIVISA, Emp.SALDO, Emp.VALOR_SOBREGIRO, Emp.FECHA_CREACION, Emp.TIPO_CUENTA" +
+    sql="SELECT Emp.NUMERO_CUENTA, Emp.DIVISA, Emp.SALDO, Emp.VALOR_SOBREGIRO, Emp.FECHA_CREACION" +
     " FROM cliente_tab E, TABLE(E.lista_cuentas) Emp" +
     " where E.id_cliente ='" + client.ID_CLIEN + "'"
 

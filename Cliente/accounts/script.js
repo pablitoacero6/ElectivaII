@@ -154,19 +154,7 @@ document.getElementById('divisaList').addEventListener("change",
 
 // extraer tipo de cuenta
 
-var opcionSeleccionadoTipoCuenta = 'NOR'
 
-function opcionSeleccionarTipoCuenta() {
-    const indice = document.getElementById('typeAccount').selectedIndex;
-    if(indice === -1) return; // Esto es cuando no hay elementos
-    const opcionSeleccionadoTipoCuenta = document.getElementById('typeAccount').options[indice].text;
-  };
-
-document.getElementById('typeAccount').addEventListener("change",
-(evt) => {
-    evt.preventDefault();
-    opcionSeleccionarTipoCuenta();
-})
 
 //extraer cliente titular
 var titularCuenta = ' '
@@ -192,8 +180,7 @@ function crearCuenta(){
             NO_ACCOUNT: document.getElementById('accountCod').value ,
             ID_CLIENT: titularCuenta,
             CURRENCY: opcionSeleccionadaDivisa,
-            BALANCE: document.getElementById('balanceAccount').value,
-            ACCOUNT_TYPE: opcionSeleccionadoTipoCuenta
+            BALANCE: document.getElementById('balanceAccount').value
         }),
         headers: {
             'Accept': 'application/json',
@@ -309,15 +296,11 @@ function mostrarCuentas(){
             var celda5 = document.createElement("td");
             var textoCelda5 = document.createTextNode(json[i].FECHA_CREACION);
             celda5.appendChild(textoCelda5);
-            var celda6 = document.createElement("td");
-            var textoCelda6 = document.createTextNode(json[i].TIPO_CUENTA);
-            celda6.appendChild(textoCelda6);
             hilera.appendChild(celda1);
             hilera.appendChild(celda2);
             hilera.appendChild(celda3);
             hilera.appendChild(celda4);
             hilera.appendChild(celda5);
-            hilera.appendChild(celda6);
             
         
             // agrega la hilera al final de la tabla (al final del elemento tblbody)
